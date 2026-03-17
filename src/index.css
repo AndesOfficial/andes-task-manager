@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* Creates a lined paper effect for the background */
+.bg-notepad {
+  background-color: #fdfbf7;
+  background-image: linear-gradient(#e5e7eb 1px, transparent 1px);
+  background-size: 100% 2rem;
+  min-height: 100vh;
+}
