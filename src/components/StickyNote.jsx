@@ -3,7 +3,7 @@ import { useRef } from 'react'
 import { db } from '../firebase'
 import { doc, updateDoc } from 'firebase/firestore'
 
-function StickyNote({ task }) {
+function StickyNote({ task, members }) {
   const nodeRef = useRef(null)
 
   const priorityColors = {
@@ -35,7 +35,7 @@ function StickyNote({ task }) {
           <p className="text-gray-700 text-xs mt-2">{task.description}</p>
         </div>
         <div className="flex justify-between items-center mt-4 pt-2 border-t border-black/10">
-          <span className="text-xs text-gray-600">{task.assignedTo}</span>
+          <span className="text-xs text-gray-600">{members[task.assignedTo] || task.assignedTo}</span>
           <div className="flex items-center gap-2">
             {task.status === 'completed' && (
               <span className="text-xs font-bold text-green-600">✓ Done</span>

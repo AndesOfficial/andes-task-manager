@@ -6,9 +6,10 @@ body {
 }
 
 /* Creates a lined paper effect for the background */
+/* Creates a lined paper effect for the background */
 .bg-notepad {
-  background-color: #fdfbf7;
-  background-image: linear-gradient(#e5e7eb 1px, transparent 1px);
-  background-size: 100% 2rem;
+  background-color: #fcfbf9; /* Warmer, softer off-white */
+  background-image: linear-gradient(#f0f0f0 1px, transparent 1px); /* Subtler lines */
+  background-size: 100% 2.5rem; /* Slightly wider spacing for a cleaner look */
   min-height: 100vh;
 }

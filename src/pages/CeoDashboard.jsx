@@ -1,9 +1,9 @@
 import { auth } from '../firebase'
 import { signOut } from 'firebase/auth'
-import { useState , useEffect} from 'react'
+import { useState, useEffect } from 'react'
 import TaskForm from '../components/TaskForm'
 import { db } from '../firebase'
-import { collection, onSnapshot } from 'firebase/firestore'
+import { collection, onSnapshot, getDocs } from 'firebase/firestore'
 import StickyNote from '../components/StickyNote'
 
 function CeoDashboard() {
@@ -13,18 +13,30 @@ function CeoDashboard() {
 
   const [showForm, setShowForm] = useState(false)
   const [tasks, setTasks] = useState([])
+  const [members, setMembers] = useState({})
 
-useEffect(() => {
-  const unsubscribe = onSnapshot(collection(db, 'andes_tm_tasks'), (snapshot) => {
-    const taskList = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data()
-    }))
-    setTasks(taskList)
-  })
-  return () => unsubscribe()
-}, [])
+  useEffect(() => {
+    const fetchMembers = async () => {
+      const snapshot = await getDocs(collection(db, 'andes_tm_users'))
+      const memberMap = {}
+      snapshot.docs.forEach((doc) => {
+        memberMap[doc.id] = doc.data().name
+      })
+      setMembers(memberMap)
+    }
+    fetchMembers()
+  }, [])
 
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, 'andes_tm_tasks'), (snapshot) => {
+      const taskList = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data()
+      }))
+      setTasks(taskList)
+    })
+    return () => unsubscribe()
+  }, [])
 
   return (
     <div className="bg-notepad min-h-screen p-8">
@@ -53,13 +65,13 @@ useEffect(() => {
 
       {/* Task Form */}
       {showForm && <TaskForm onClose={() => setShowForm(false)} />}
-        {/* Canvas */}
-{/* Canvas */}
-<div className="relative w-full" style={{ height: 'calc(100vh - 120px)' }}>
-  {tasks.map((task) => (
-    <StickyNote key={task.id} task={task} />
-  ))}
-</div>
+
+      {/* Canvas */}
+      <div className="relative w-full" style={{ height: 'calc(100vh - 120px)' }}>
+        {tasks.map((task) => (
+          <StickyNote key={task.id} task={task} members={members} />
+        ))}
+      </div>
 
     </div>
   )
