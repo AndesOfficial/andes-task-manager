@@ -7,6 +7,7 @@ function TaskForm({ onClose }) {
   const [description, setDescription] = useState('')
   const [priority, setPriority] = useState('low')
   const [assignedTo, setAssignedTo] = useState('')
+  const [dueDate, setDueDate] = useState('')
   const [members, setMembers] = useState([])
 
   useEffect(() => {
@@ -36,6 +37,7 @@ function TaskForm({ onClose }) {
         description,
         priority,
         assignedTo,
+        dueDate,
         status: 'pending',
         position: { x: 100, y: 100 },
         createdAt: serverTimestamp()
@@ -78,6 +80,13 @@ function TaskForm({ onClose }) {
             <option value="medium">Medium Priority</option>
             <option value="high">High Priority</option>
           </select>
+
+          <input
+            type="date"
+            value={dueDate}
+            onChange={(e) => setDueDate(e.target.value)}
+            className="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 text-slate-600"
+          />
 
           <select
             value={assignedTo}

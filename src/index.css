@@ -1,15 +1,176 @@
 @import "tailwindcss";
 
+@layer base {
+  :root {
+    --theme-bg: #f8fafc;
+    --theme-pattern: radial-gradient(#cbd5e1 1.5px, transparent 1.5px);
+    --theme-card: #ffffff;
+    --theme-text: #1e293b;
+    --theme-text-muted: #64748b;
+    --theme-border: #e2e8f0;
+    --theme-accent: #3b82f6;
+    --theme-accent-hover: #2563eb;
+    --theme-success: #10b981;
+    --badge-high-bg: #fee2e2;
+    --badge-high-text: #b91c1c;
+    --badge-med-bg: #ffedd5;
+    --badge-med-text: #c2410c;
+    --badge-low-bg: #d1fae5;
+    --badge-low-text: #047857;
+    --btn-secondary-bg: #f1f5f9;
+    --btn-secondary-text: #475569;
+    --item-hover: #f1f5f9;
+    /* Note Colors Light */
+    --note-bg-0: #fef08a;
+    --note-bg-1: #fbcfe8;
+    --note-bg-2: #bfdbfe;
+    --note-bg-3: #bbf7d0;
+    --note-bg-4: #e9d5ff;
+    --note-border-0: #fde047;
+    --note-border-1: #f9a8d4;
+    --note-border-2: #93c5fd;
+    --note-border-3: #86efac;
+    --note-border-4: #d8b4fe;
+  }
+
+  [data-theme='dark'] {
+    --theme-bg: #0f172a;
+    --theme-pattern: radial-gradient(#334155 1.5px, transparent 1.5px);
+    --theme-card: #1e293b;
+    --theme-text: #f8fafc;
+    --theme-text-muted: #94a3b8;
+    --theme-border: #334155;
+    --theme-accent: #3b82f6;
+    --theme-accent-hover: #60a5fa;
+    --theme-success: #10b981;
+    --badge-high-bg: rgba(153, 27, 27, 0.3);
+    --badge-high-text: #f87171;
+    --badge-med-bg: rgba(154, 52, 18, 0.3);
+    --badge-med-text: #fb923c;
+    --badge-low-bg: rgba(6, 78, 59, 0.3);
+    --badge-low-text: #34d399;
+    --btn-secondary-bg: #334155;
+    --btn-secondary-text: #cbd5e1;
+    --item-hover: #334155;
+    /* Note Colors Dark */
+    --note-bg-0: #423616;
+    --note-bg-1: #4a273b;
+    --note-bg-2: #1e3a5f;
+    --note-bg-3: #1c4532;
+    --note-bg-4: #3b2856;
+    --note-border-0: #594a20;
+    --note-border-1: #63334d;
+    --note-border-2: #284c7a;
+    --note-border-3: #265c43;
+    --note-border-4: #4c336e;
+  }
+
+  [data-theme='sticky'] {
+    --theme-bg: #e2d9c8;
+    --theme-pattern: none;
+    --theme-card: #fdfbf7;
+    --theme-text: #3d3b38;
+    --theme-text-muted: #7a7369;
+    --theme-border: #d1c8b4;
+    --theme-accent: #ea580c;
+    --theme-accent-hover: #c2410c;
+    --theme-success: #16a34a;
+    --badge-high-bg: #fef08a;
+    --badge-high-text: #854d0e;
+    --badge-med-bg: #fed7aa;
+    --badge-med-text: #9a3412;
+    --badge-low-bg: #bbf7d0;
+    --badge-low-text: #166534;
+    --btn-secondary-bg: #eaddca;
+    --btn-secondary-text: #5c5750;
+    --item-hover: #eaddca;
+    /* Note Colors Sticky */
+    --note-bg-0: #fee896;
+    --note-bg-1: #ffcfdd;
+    --note-bg-2: #cce0ff;
+    --note-bg-3: #c8f5d6;
+    --note-bg-4: #e8dbff;
+    --note-border-0: #f0c95d;
+    --note-border-1: #eab4c4;
+    --note-border-2: #b4cdec;
+    --note-border-3: #aee3bf;
+    --note-border-4: #ccbdee;
+  }
+}
+
 body {
   margin: 0;
   padding: 0;
+  background-color: var(--theme-bg);
+  color: var(--theme-text);
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-/* Creates a lined paper effect for the background */
-/* Creates a lined paper effect for the background */
+/* Base custom classes utilizing the variables */
+.badge-high { background-color: var(--badge-high-bg); color: var(--badge-high-text); }
+.badge-medium { background-color: var(--badge-med-bg); color: var(--badge-med-text); }
+.badge-low { background-color: var(--badge-low-bg); color: var(--badge-low-text); }
+
+.btn-primary { background-color: var(--theme-accent); color: #ffffff; }
+.btn-primary:hover { background-color: var(--theme-accent-hover); }
+
+.btn-secondary { background-color: var(--btn-secondary-bg); color: var(--btn-secondary-text); }
+.btn-secondary:hover { opacity: 0.8; }
+.theme-hover:hover { background-color: var(--item-hover); }
+
+.note-color-0 { background-color: var(--note-bg-0); border-color: var(--note-border-0); }
+.note-color-1 { background-color: var(--note-bg-1); border-color: var(--note-border-1); }
+.note-color-2 { background-color: var(--note-bg-2); border-color: var(--note-border-2); }
+.note-color-3 { background-color: var(--note-bg-3); border-color: var(--note-border-3); }
+.note-color-4 { background-color: var(--note-bg-4); border-color: var(--note-border-4); }
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--theme-bg);
+  color: var(--theme-text);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Base custom classes utilizing the variables */
+.badge-high { background-color: var(--badge-high-bg); color: var(--badge-high-text); }
+.badge-medium { background-color: var(--badge-med-bg); color: var(--badge-med-text); }
+.badge-low { background-color: var(--badge-low-bg); color: var(--badge-low-text); }
+
+.btn-secondary { background-color: var(--btn-secondary-bg); color: var(--btn-secondary-text); }
+.btn-secondary:hover { opacity: 0.8; }
+.theme-hover:hover { background-color: var(--item-hover); }
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--theme-bg);
+  color: var(--theme-text);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Base custom classes utilizing the variables */
 .bg-notepad {
-  background-color: #fcfbf9; /* Warmer, softer off-white */
-  background-image: linear-gradient(#f0f0f0 1px, transparent 1px); /* Subtler lines */
-  background-size: 100% 2.5rem; /* Slightly wider spacing for a cleaner look */
+  background-color: var(--theme-bg);
+  background-image: var(--theme-pattern);
+  background-size: 24px 24px;
   min-height: 100vh;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  transition: background-color 0.4s ease;
+}
+
+/* Card classes */
+.theme-card {
+  background-color: var(--theme-card);
+  border-color: var(--theme-border);
+  color: var(--theme-text);
+  transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+}
+
+.theme-text {
+  color: var(--theme-text);
+}
+
+.theme-text-muted {
+  color: var(--theme-text-muted);
 }
