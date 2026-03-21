@@ -21,21 +21,22 @@
     --btn-secondary-text: #475569;
     --item-hover: #f1f5f9;
     /* Note Colors Light */
-    --note-bg-0: #fef08a;
-    --note-bg-1: #fbcfe8;
-    --note-bg-2: #bfdbfe;
-    --note-bg-3: #bbf7d0;
-    --note-bg-4: #e9d5ff;
-    --note-border-0: #fde047;
-    --note-border-1: #f9a8d4;
-    --note-border-2: #93c5fd;
-    --note-border-3: #86efac;
-    --note-border-4: #d8b4fe;
+    --note-bg-0: #fde68a;
+    --note-bg-1: #fda4af;
+    --note-bg-2: #93c5fd;
+    --note-bg-3: #6ee7b7;
+    --note-bg-4: #c4b5fd;
+    --note-border-0: #f59e0b;
+    --note-border-1: #f43f5e;
+    --note-border-2: #3b82f6;
+    --note-border-3: #10b981;
+    --note-border-4: #8b5cf6;
+    --column-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); /* shadow-sm */
   }
 
   [data-theme='dark'] {
     --theme-bg: #0f172a;
-    --theme-pattern: radial-gradient(#334155 1.5px, transparent 1.5px);
+    --theme-pattern: radial-gradient(#2a3a52 1.5px, transparent 1.5px);
     --theme-card: #1e293b;
     --theme-text: #f8fafc;
     --theme-text-muted: #94a3b8;
@@ -53,21 +54,22 @@
     --btn-secondary-text: #cbd5e1;
     --item-hover: #334155;
     /* Note Colors Dark */
-    --note-bg-0: #423616;
-    --note-bg-1: #4a273b;
-    --note-bg-2: #1e3a5f;
-    --note-bg-3: #1c4532;
-    --note-bg-4: #3b2856;
-    --note-border-0: #594a20;
-    --note-border-1: #63334d;
-    --note-border-2: #284c7a;
-    --note-border-3: #265c43;
-    --note-border-4: #4c336e;
+    --note-bg-0: #332a10;
+    --note-bg-1: #381d2c;
+    --note-bg-2: #152a47;
+    --note-bg-3: #123324;
+    --note-bg-4: #2b1d40;
+    --note-border-0: #4a3d1b;
+    --note-border-1: #522a40;
+    --note-border-2: #1e3b63;
+    --note-border-3: #1b4733;
+    --note-border-4: #3d2a5c;
+    --column-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.3); /* dark shadow-sm */
   }
 
   [data-theme='sticky'] {
-    --theme-bg: #e2d9c8;
-    --theme-pattern: none;
+    --theme-bg: #c8a96e;
+    --theme-pattern: radial-gradient(rgba(184, 147, 90, 0.4) 1.5px, transparent 1.5px);
     --theme-card: #fdfbf7;
     --theme-text: #3d3b38;
     --theme-text-muted: #7a7369;
@@ -85,17 +87,27 @@
     --btn-secondary-text: #5c5750;
     --item-hover: #eaddca;
     /* Note Colors Sticky */
-    --note-bg-0: #fee896;
-    --note-bg-1: #ffcfdd;
-    --note-bg-2: #cce0ff;
-    --note-bg-3: #c8f5d6;
-    --note-bg-4: #e8dbff;
+    --note-bg-0: #fde68a;
+    --note-bg-1: #fda4af;
+    --note-bg-2: #93c5fd;
+    --note-bg-3: #6ee7b7;
+    --note-bg-4: #c4b5fd;
     --note-border-0: #f0c95d;
     --note-border-1: #eab4c4;
     --note-border-2: #b4cdec;
     --note-border-3: #aee3bf;
     --note-border-4: #ccbdee;
+    --column-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); /* shadow-xl */
   }
+}
+
+/* Custom Scrollbar Visibility Override */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;    /* Firefox */
 }
 
 body {
@@ -124,32 +136,6 @@ body {
 .note-color-3 { background-color: var(--note-bg-3); border-color: var(--note-border-3); }
 .note-color-4 { background-color: var(--note-bg-4); border-color: var(--note-border-4); }
 
-body {
-  margin: 0;
-  padding: 0;
-  background-color: var(--theme-bg);
-  color: var(--theme-text);
-  transition: background-color 0.4s ease, color 0.4s ease;
-}
-
-/* Base custom classes utilizing the variables */
-.badge-high { background-color: var(--badge-high-bg); color: var(--badge-high-text); }
-.badge-medium { background-color: var(--badge-med-bg); color: var(--badge-med-text); }
-.badge-low { background-color: var(--badge-low-bg); color: var(--badge-low-text); }
-
-.btn-secondary { background-color: var(--btn-secondary-bg); color: var(--btn-secondary-text); }
-.btn-secondary:hover { opacity: 0.8; }
-.theme-hover:hover { background-color: var(--item-hover); }
-
-body {
-  margin: 0;
-  padding: 0;
-  background-color: var(--theme-bg);
-  color: var(--theme-text);
-  transition: background-color 0.4s ease, color 0.4s ease;
-}
-
-/* Base custom classes utilizing the variables */
 .bg-notepad {
   background-color: var(--theme-bg);
   background-image: var(--theme-pattern);
@@ -171,6 +157,79 @@ body {
   color: var(--theme-text);
 }
 
+select option {
+  background-color: var(--theme-card);
+  color: var(--theme-text);
+}
+
 .theme-text-muted {
   color: var(--theme-text-muted);
+}
+
+::placeholder {
+  color: var(--theme-text-muted);
+  opacity: 0.6;
+}
+
+/* UI: Sticky Note Utilities */
+.sticky-note-wrap {
+  filter: drop-shadow(2px 6px 14px rgba(0,0,0,0.45))
+          drop-shadow(0 1px 3px rgba(0,0,0,0.3));
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+.sticky-note-wrap:hover {
+  filter: drop-shadow(3px 12px 24px rgba(0,0,0,0.65))
+          drop-shadow(0 2px 6px rgba(0,0,0,0.45));
+}
+.note-tape {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-1.5deg);
+  width: 52px;
+  height: 20px;
+  background: rgba(255,255,255,0.28);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 2px;
+  z-index: 5;
+  pointer-events: none;
+}
+.note-pin {
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 13px;
+  height: 13px;
+  background: #dc2626;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.55), inset 0 -1px 2px rgba(0,0,0,0.25);
+  z-index: 6;
+  pointer-events: none;
+}
+.note-pin::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 4px;
+  height: 4px;
+  background: rgba(255,255,255,0.5);
+  border-radius: 50%;
+}
+.note-fold {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 0 22px 22px;
+  border-color: transparent transparent rgba(0,0,0,0.18) transparent;
+  pointer-events: none;
+}
+
+@keyframes overduePulse {
+  0%, 100% { box-shadow: 0 0 0 2px #ef4444; }
+  50%       { box-shadow: 0 0 0 5px rgba(239,68,68,0.25); }
 }

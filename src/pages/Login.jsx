@@ -34,11 +34,11 @@ function Login() {
 
   return (
     <div className="bg-notepad min-h-screen flex items-center justify-center">
-      <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-sm">
+      <div className="theme-card rounded-2xl shadow-xl p-8 w-full max-w-sm border transition-colors">
 
         <div className="mb-8 text-center">
-          <h1 className="text-2xl font-bold text-slate-800">Andes Task Manager</h1>
-          <p className="text-slate-400 text-sm mt-1">Sign in to your workspace</p>
+          <h1 className="text-2xl font-bold theme-text">Andes Task Manager</h1>
+          <p className="theme-text-muted text-sm mt-1">Sign in to your workspace</p>
         </div>
 
         <div className="flex flex-col gap-4">
@@ -47,14 +47,16 @@ function Login() {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="border border-slate-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+            style={{ backgroundColor: 'var(--theme-card)', borderColor: 'var(--theme-border)' }}
+            className="border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 theme-text transition-colors"
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="border border-slate-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+            style={{ backgroundColor: 'var(--theme-card)', borderColor: 'var(--theme-border)' }}
+            className="border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 theme-text transition-colors"
           />
 
           {error && <p className="text-red-500 text-xs">{error}</p>}
@@ -80,7 +82,8 @@ function Login() {
                 placeholder="Enter your email"
                 value={resetEmail}
                 onChange={(e) => setResetEmail(e.target.value)}
-                className="border border-slate-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                style={{ backgroundColor: 'var(--theme-card)', borderColor: 'var(--theme-border)' }}
+                className="border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 theme-text transition-colors"
               />
               <button
                 onClick={handleResetPassword}
@@ -89,7 +92,7 @@ function Login() {
                 Send Reset Link
               </button>
               {resetMessage && (
-                <p className="text-xs text-center text-green-600">{resetMessage}</p>
+                <p style={{ color: 'var(--theme-success)' }} className="text-xs text-center font-bold">{resetMessage}</p>
               )}
             </div>
           )}

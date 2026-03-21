@@ -7,12 +7,14 @@ import { db } from './firebase'
 import CeoDashboard from './pages/CeoDashboard'
 import MemberView from './pages/MemberView'
 import CommandPalette from './components/CommandPalette'
-import TaskForm from './components/TaskForm'
 
 function App() {
   const [user, setUser] = useState(null)
   const [role, setRole] = useState(null)
-  const [loading, setLoading] = useState(true)
+  
+  // FIX: Separate auth loading and role loading states to prevent Login page flash
+  const [authLoading, setAuthLoading] = useState(true)
+  const [roleLoading, setRoleLoading] = useState(true)
   
   const [isCommandOpen, setIsCommandOpen] = useState(false)
   const [theme, setTheme] = useState('light')
@@ -22,27 +24,52 @@ function App() {
   }, [theme])
 
   useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault()
+        setIsCommandOpen(prev => !prev)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
+
+  useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser)
-      setLoading(false)
+      setAuthLoading(false)
+      // If there is no user, we don't need to load a role
+      if (!currentUser) setRoleLoading(false)
     })
     return () => unsubscribe()
   }, [])
 
   useEffect(() => {
     if (!user) return
-    const unsubscribe = onSnapshot(doc(db, 'andes_tm_users', user.uid), (docSnap) => {
+    const userRef = doc(db, 'andes_tm_users', user.uid)
+    const unsubscribe = onSnapshot(userRef, async (docSnap) => {
       if (docSnap.exists()) {
         const data = docSnap.data()
         if (data.role) setRole(data.role)
         if (data.theme) setTheme(data.theme)
+      } else {
+        // Auto-provision if missing
+        const newProfile = {
+          name: user.displayName || user.email?.split('@')[0] || 'New Member',
+          role: 'member',
+          theme: 'light',
+          email: user.email,
+          createdAt: new Date()
+        }
+        await setDoc(userRef, newProfile)
       }
+      setRoleLoading(false)
     })
     return () => unsubscribe()
   }, [user])
 
   const handleThemeChange = async (newTheme) => {
-    setTheme(newTheme) // Optimistic update
+    setTheme(newTheme) 
     if (user) {
       try {
         await setDoc(doc(db, 'andes_tm_users', user.uid), { theme: newTheme }, { merge: true })
@@ -52,7 +79,7 @@ function App() {
     }
   }
 
-  if (loading) {
+  if (authLoading || roleLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-notepad">
         <p className="text-slate-400 text-sm animate-pulse">Loading workspace...</p>
@@ -63,7 +90,7 @@ function App() {
   if (user && role === 'ceo') {
     return (
       <>
-        <CeoDashboard theme={theme} setTheme={handleThemeChange} />
+        <CeoDashboard theme={theme} setTheme={handleThemeChange} setIsCommandOpen={setIsCommandOpen} />
         <CommandPalette isOpen={isCommandOpen} setIsOpen={setIsCommandOpen} />
       </>
     )

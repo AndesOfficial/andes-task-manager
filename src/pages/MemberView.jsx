@@ -1,6 +1,6 @@
 import { auth } from '../firebase'
 import { signOut } from 'firebase/auth'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { db } from '../firebase'
 import { doc, updateDoc, getDoc } from 'firebase/firestore'
 import { collection, query, where, onSnapshot } from 'firebase/firestore'
@@ -39,6 +39,8 @@ function MemberView({ user, theme, setTheme }) {
     fetchUser()
   }, [user.uid])
 
+  const prevTaskIds = useRef(new Set())
+
   useEffect(() => {
     const q = query(collection(db, 'andes_tm_tasks'), where('assignedTo', '==', user.uid))
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -46,6 +48,22 @@ function MemberView({ user, theme, setTheme }) {
         id: doc.id,
         ...doc.data()
       }))
+      
+      // Notification Logic: Check for new task IDs
+      const currentTaskIds = new Set(taskList.map(t => t.id))
+      const newTasks = taskList.filter(t => !prevTaskIds.current.has(t.id))
+      
+      if (prevTaskIds.current.size > 0 && newTasks.length > 0) {
+        newTasks.forEach(task => {
+          toast.success(`New Task Assigned: ${task.title}`, {
+            icon: '🆕',
+            duration: 6000,
+            style: { border: '1px solid var(--theme-border)', borderRadius: '12px', background: 'var(--theme-card)', color: 'var(--theme-text)' }
+          })
+        })
+      }
+      
+      prevTaskIds.current = currentTaskIds
       setTasks(taskList)
     })
     return () => unsubscribe()
@@ -54,13 +72,18 @@ function MemberView({ user, theme, setTheme }) {
   const handleStatusChange = async (task, newStatus) => {
     if (task.status === newStatus) return;
     
-    await updateDoc(doc(db, 'andes_tm_tasks', task.id), { status: newStatus })
-    
-    if (newStatus === 'completed') {
-      confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#10b981', '#ffffff'] })
-      toast.success('Task marked as Done! 🎉', { style: { borderRadius: '10px', background: '#ecfdf5', color: '#065f46' } })
-    } else if (newStatus === 'in_progress') {
-      toast('Task moved to In Progress 🚀', { icon: '🚀', style: { borderRadius: '10px' } })
+    try {
+      await updateDoc(doc(db, 'andes_tm_tasks', task.id), { status: newStatus })
+      
+      if (newStatus === 'completed') {
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#10b981', '#ffffff'] })
+        toast.success('Task marked as Done! 🎉', { style: { borderRadius: '10px', background: '#ecfdf5', color: '#065f46' } })
+      } else if (newStatus === 'in_progress') {
+        toast('Task moved to In Progress 🚀', { icon: '🚀', style: { borderRadius: '10px' } })
+      }
+    } catch (err) {
+      toast.error('Failed to update task status.')
+      console.error(err)
     }
   }
 
@@ -130,17 +153,14 @@ function MemberView({ user, theme, setTheme }) {
         <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-7xl mx-auto items-start">
             <KanbanColumn id="pending" title="To Do" tasks={columnPending}>
-              {columnPending.length === 0 && <div className="text-center py-10 opacity-60 theme-text-muted"><FaInbox className="mx-auto text-3xl mb-3"/> <p className="text-sm font-medium">All clear here!</p></div>}
               {columnPending.map(task => <KanbanCard key={task.id} task={task} handleStatusChange={handleStatusChange} />)}
             </KanbanColumn>
 
             <KanbanColumn id="in_progress" title="In Progress" tasks={columnProgress}>
-              {columnProgress.length === 0 && <div className="text-center py-10 opacity-60 theme-text-muted"><FaSpinner className="mx-auto text-3xl mb-3"/> <p className="text-sm font-medium">Ready to start?</p></div>}
               {columnProgress.map(task => <KanbanCard key={task.id} task={task} handleStatusChange={handleStatusChange} />)}
             </KanbanColumn>
 
             <KanbanColumn id="completed" title="Done" tasks={columnDone}>
-              {columnDone.length === 0 && <div className="text-center py-10 opacity-60 theme-text-muted"><FaCheckCircle className="mx-auto text-3xl mb-3"/> <p className="text-sm font-medium">Get things done!</p></div>}
               {columnDone.length > 0 && columnDone.length === filteredTasks.length && (
                   <div className="theme-card bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800 p-5 rounded-xl text-center mb-2 border shadow-sm">
                      <p className="text-emerald-700 dark:text-emerald-400 font-bold text-lg">🎉 You’re all caught up!</p>
