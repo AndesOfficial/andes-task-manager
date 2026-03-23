@@ -53,13 +53,13 @@ export default function KanbanCard({ task, handleStatusChange }) {
       {...listeners}
       {...attributes}
       style={dragStyle}
-      className={`relative theme-card rounded-xl shadow-sm border border-l-4 ${borderColors[task.priority] || 'border-l-blue-400'} p-4 flex flex-col gap-2 transition-all hover:shadow-md cursor-grab active:cursor-grabbing group ${isDragging ? 'opacity-70 ring-2 ring-blue-400 shadow-xl scale-105' : ''}`}
+      className={`relative theme-card rounded-xl shadow-sm border border-l-4 ${borderColors[task.priority] || 'border-l-blue-400'} p-4 flex flex-col gap-2 transition-all duration-200 ease-in-out hover:-translate-y-1 hover:shadow-lg cursor-grab active:cursor-grabbing group ${isDragging ? 'opacity-70 ring-2 ring-blue-400 shadow-xl scale-105' : ''}`}
     >
       <div className="flex justify-between items-start mb-1">
-        <h3 className={`font-semibold text-sm leading-snug ${task.status === 'completed' ? 'theme-text-muted line-through opacity-70' : 'theme-text'}`}>
+        <h3 className={`font-bold text-sm leading-snug ${task.status === 'completed' ? 'theme-text-muted line-through opacity-70' : 'theme-text'}`}>
           {task.title}
         </h3>
-        <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full flex-shrink-0 ml-2 ${badgeColors[task.priority] || badgeColors.low}`}>
+        <span className={`text-[10px] font-bold uppercase px-2 py-1 rounded-full flex-shrink-0 ml-2 ${badgeColors[task.priority] || badgeColors.low}`}>
           {task.priority || 'low'}
         </span>
       </div>
@@ -68,16 +68,17 @@ export default function KanbanCard({ task, handleStatusChange }) {
         <p className="theme-text-muted text-xs line-clamp-2 opacity-90">{task.description}</p>
       )}
 
-      <div className="flex flex-col gap-2 mt-2 pt-3 border-t theme-border border-opacity-40">
+      {/* Removed border-t separator, relying on margin/gap for whitespace */}
+      <div className="flex flex-col gap-2 mt-3 block">
         <div className="flex justify-between items-end">
-           <div className="flex flex-col gap-1.5">
+           <div className="flex flex-col gap-1.5 mt-2">
              {dueInfo && (
                 <div className={`flex items-center gap-1.5 text-[10px] ${dueColor}`}>
                   <FaRegClock />
                   <span>{dueInfo}</span>
                 </div>
              )}
-             <div className="text-[9px] theme-text-muted opacity-80 flex items-center gap-1.5">
+             <div className="text-[10px] theme-text-muted opacity-60 flex items-center gap-1.5 font-medium">
                <span title={task.createdAt?.toDate ? task.createdAt.toDate().toString() : ''}>
                  {task.createdAt?.toDate ? formatDistanceToNow(task.createdAt.toDate(), { addSuffix: true }) : 'just now'}
                </span>
@@ -89,7 +90,7 @@ export default function KanbanCard({ task, handleStatusChange }) {
              {task.status !== 'completed' && (
                 <button
                   onPointerDown={(e) => { e.stopPropagation(); handleStatusChange(task, 'completed'); }}
-                  className="p-1.5 rounded-md hover:bg-emerald-100 text-emerald-600 transition-colors bg-white shadow-sm border border-slate-200"
+                  className="p-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-emerald-600 transition-colors bg-white dark:bg-slate-700 shadow-sm border border-slate-200 dark:border-slate-600"
                   title="Mark as Done"
                 >
                   <FaCheck size={12} />
@@ -98,7 +99,7 @@ export default function KanbanCard({ task, handleStatusChange }) {
              {task.status === 'pending' && (
                 <button
                   onPointerDown={(e) => { e.stopPropagation(); handleStatusChange(task, 'in_progress'); }}
-                  className="p-1.5 rounded-md hover:bg-blue-100 text-blue-600 transition-colors bg-white shadow-sm border border-slate-200"
+                  className="p-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-blue-600 transition-colors bg-white dark:bg-slate-700 shadow-sm border border-slate-200 dark:border-slate-600"
                   title="Start Progress"
                 >
                   <FaPlay size={10} />
